@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azat Samatuly</title>
+  <meta name="description" content="Performance marketer building acquisition engines. $1M/mo ad spend, 40% blended ROI, TechCrunch Battlefield 200.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #fff;
+      --fg: #111;
+      --muted: #999;
+      --faded: #ccc;
+      --border-deco: #bbb;
+      --link-underline: #999;
+      --link-underline-hover: #111;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111;
+        --fg: #e5e5e5;
+        --muted: #666;
+        --faded: #444;
+        --border-deco: #444;
+        --link-underline: #666;
+        --link-underline-hover: #e5e5e5;
+      }
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--fg);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 140px 24px 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--link-underline);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      transition: text-decoration-color 0.2s ease, color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--fg);
+      text-decoration-color: var(--link-underline-hover);
+    }
+
+    .hero-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--fg);
+      line-height: 1.4;
+    }
+
+    .hero-bio {
+      margin-top: 28px;
+    }
+
+    .hero-bio p {
+      margin-bottom: 16px;
+    }
+
+    .hero-bio p:last-child {
+      margin-bottom: 0;
+    }
+
+    .hero-contact {
+      margin-top: 16px;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .hero-contact a {
+      color: var(--muted);
+      text-decoration-color: var(--border-deco);
+    }
+
+    .hero-contact a:hover {
+      color: var(--fg);
+      text-decoration-color: var(--fg);
+    }
+
+    .middot {
+      margin: 0 2px;
+    }
+
+    section {
+      margin-top: 80px;
+    }
+
+    .section-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px 16px;
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--fg);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.3;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /*
+     * Single opacity transition on the parent prevents the
+     * per-element color flicker the user reported.
+     */
+    .hl-item {
+      opacity: 0.6;
+      transition: opacity 0.25s ease;
+    }
+
+    .hl-item:hover,
+    .hl-item.active {
+      opacity: 1;
+    }
+
+    /* Experience */
+    .exp-list .exp-entry {
+      padding: 10px 0;
+      cursor: pointer;
+    }
+
+    .exp-row {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .exp-year {
+      font-size: 0.85rem;
+      color: var(--muted);
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .exp-title {
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    .exp-company {
+      font-weight: 500;
+      color: var(--fg);
+    }
+
+    .exp-role {
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .exp-location {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: right;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .exp-toggle {
+      font-size: 0.75rem;
+      color: var(--faded);
+      margin-left: 8px;
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+
+    .exp-entry.active .exp-toggle {
+      transform: rotate(45deg);
+    }
+
+    .exp-details {
+      overflow: hidden;
+      height: 0;
+      opacity: 0;
+      transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      padding-left: 80px;
+    }
+
+    .exp-entry.active .exp-details {
+      opacity: 1;
+    }
+
+    .exp-details-inner {
+      padding: 8px 0 16px;
+    }
+
+    .exp-details p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .exp-details a {
+      color: var(--muted);
+      text-decoration-color: var(--border-deco);
+    }
+
+    .exp-details a:hover {
+      color: var(--fg);
+      text-decoration-color: var(--fg);
+    }
+
+    /* Side projects */
+    .project-entry {
+      padding: 10px 0;
+      cursor: pointer;
+    }
+
+    .project-row {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .project-year {
+      font-size: 0.85rem;
+      color: var(--muted);
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .project-title {
+      font-size: 0.95rem;
+      color: var(--fg);
+      flex: 1;
+    }
+
+    .project-toggle {
+      margin-left: 8px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--faded);
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .project-toggle svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .project-entry.active .project-toggle {
+      transform: rotate(90deg);
+    }
+
+    .project-details {
+      overflow: hidden;
+      height: 0;
+      opacity: 0;
+      transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      padding-left: 80px;
+    }
+
+    .project-entry.active .project-details {
+      opacity: 1;
+    }
+
+    .project-details-inner {
+      padding: 12px 0 16px;
+    }
+
+    .project-media {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .project-media::-webkit-scrollbar {
+      display: none;
+    }
+
+    .project-media img {
+      height: 320px;
+      width: auto;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .project-media video {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 6px;
+      display: block;
+    }
+
+    /* Beliefs */
+    .belief-row {
+      display: flex;
+      align-items: baseline;
+      padding: 8px 0;
+    }
+
+    .belief-num {
+      font-size: 0.85rem;
+      color: var(--muted);
+      min-width: 32px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .belief-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+
+    footer {
+      font-size: 0.8rem;
+      color: var(--faded);
+      text-align: center;
+      padding: 48px 0 80px;
+      margin-top: 80px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding-top: 80px;
+      }
+
+      section {
+        margin-top: 60px;
+      }
+
+      .exp-row,
+      .project-row {
+        flex-wrap: wrap;
+      }
+
+      .exp-year,
+      .project-year {
+        min-width: auto;
+        width: 100%;
+        margin-bottom: 2px;
+      }
+
+      .exp-location {
+        display: none;
+      }
+
+      .exp-details,
+      .project-details {
+        padding-left: 0;
+      }
+
+      .project-media img {
+        height: 240px;
+      }
+
+      .project-media video {
+        max-width: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="hero-name">Azat Samatuly</div>
+      <div class="hero-bio">
+        <p>I'm a Growth Engineer based in San Francisco. I build acquisition engines - paid, organic, outbound - that turn spend into pipeline.</p>
+        <p>Currently scaling to $1M/mo ad spend at <a href="https://www.linkedin.com/company/nomadventurestudio/" target="_blank">Nomad Venture Studio</a> (AI EdTech). Previously drove GTM at <a href="https://surfaice.com" target="_blank">Surfaice</a> (Palo Alto, AI Construction Tech), closing $180K ACV and earning a <a href="https://techcrunch.com/startup-battlefield" target="_blank">TechCrunch Battlefield 200</a> invitation. Built growth systems at <a href="https://www.dg-en.com/" target="_blank">Digital Garage</a> (early investor in Twitter, Facebook, LinkedIn) and product at <a href="https://www.adobe.com" target="_blank">Adobe</a>.</p>
+        <p>I study CS &amp; Business at <a href="https://www.minerva.edu" target="_blank">Minerva University</a> (1% acceptance rate, #1 in innovation) with concentrations in AI and Marketing.</p>
+      </div>
+      <div class="hero-contact">
+        <a href="mailto:azat.samatuly@uni.minerva.edu">azat.samatuly@uni.minerva.edu</a><span class="middot"> · </span><a href="https://www.linkedin.com/in/azat-samatuly/" target="_blank">LinkedIn</a><span class="middot"> · </span><a href="https://t.me/azattqz" target="_blank">Telegram</a>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-label">Numbers</div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number">$1M/mo</div>
+          <div class="stat-label">Ad spend managed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">40%</div>
+          <div class="stat-label">Blended ROI at scale</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$0.87</div>
+          <div class="stat-label">CPC (Meta + Google)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$180K</div>
+          <div class="stat-label">ACV closed (B2B)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">90/wk</div>
+          <div class="stat-label">Ad creatives produced</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">44%</div>
+          <div class="stat-label">CPL reduction</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">15M+</div>
+          <div class="stat-label">Organic views</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">283%</div>
+          <div class="stat-label">LinkedIn impression growth</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">60%</div>
+          <div class="stat-label">LTV above CAC</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">Experience</div>
+      <div class="exp-list highlight-list">
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2026</span>
+            <span class="exp-title"><span class="exp-company">Nomad Venture Studio</span> <span class="exp-role">· Performance Marketing Manager</span></span>
+            <span class="exp-location">Dubai</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>Scaling monthly ad spend to $1M across Meta &amp; Google Ads. Maintaining 40% blended ROI at $0.87 CPC. Producing 90 ad creatives/week. A/B testing hooks and formats to keep LTV above CAC by 60%</a>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2025-26</span>
+            <span class="exp-title"><span class="exp-company">Digital Garage</span> <span class="exp-role">· Growth &amp; Sourcing Associate</span></span>
+            <span class="exp-location">Tokyo</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>Led performance marketing for <a href="https://onlab.jp/en/" target="_blank">Open Network Lab</a> (Onlab) accelerator - applications hit all-time record, +30% above 3-year average. Co-led marketing for <a href="https://takeofftokyo.com" target="_blank">Takeoff Tokyo</a>: 4,500+ signups, 6.2x ROAS, 38% landing page conversion. Promoted <a href="https://lovable.dev" target="_blank">Lovable</a> x <a href="https://supercell.com" target="_blank">Supercell</a> Hackathon via email + community campaigns, 240 registrations, 82% show rate.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2025-26</span>
+            <span class="exp-title"><span class="exp-company">Minerva University</span> <span class="exp-role">· Brand &amp; Marketing Intern</span></span>
+            <span class="exp-location">San Francisco</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>Ran 50+ ad variants across Meta &amp; Google for NACAC National College Fair. $4.10 CPL vs. $7.80 benchmark. SEO/AEO optimization: +35% organic sessions. Contributed to record applicant pool.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2025</span>
+            <span class="exp-title"><span class="exp-company">Surfaice</span> <span class="exp-role">· Go-to-Market Manager</span></span>
+            <span class="exp-location">Palo Alto</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>Closed $180K ACV (<a href="https://www.jdsports.com" target="_blank">JD Sports</a>). Advanced 50 U.S. retail brands into pilot negotiations. Built 600+ account pipeline engine. Ran investor outreach: 1,000 leads, 25 VC calls, $500K investment. Scaled LinkedIn: +283% impressions, +237% engagements. Top 3 of 485 startups, <a href="https://techcrunch.com/startup-battlefield" target="_blank">TechCrunch Battlefield 200</a>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2025</span>
+            <span class="exp-title"><span class="exp-company">Y Combinator</span> <span class="exp-role">· AI Startup School</span></span>
+            <span class="exp-location">San Francisco</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>Inaugural AI Startup School. Selected as part of the top 2,500 CS undergrads, grad students and recent graduates in AI to hear from the world's top AI experts and founders in SF. Lectures from Sam Altman, Elon Musk, Jared Kaplan, Andrej Karpathy, and more.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2024-25</span>
+            <span class="exp-title"><span class="exp-company">Adobe</span> <span class="exp-role">· Product Management Intern</span></span>
+            <span class="exp-location">San Jose</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>Shipped AI gamification + habit loop features on <a href="https://www.adobe.com" target="_blank">Adobe</a> Life App. 95% user satisfaction. Built Next.js prototype, ran A/B tests + 10 user interviews. 5 Agile sprints across eng/UX/research.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2024</span>
+            <span class="exp-title"><span class="exp-company">Puzzle Strategy Consulting</span> <span class="exp-role">· Marketing Manager</span></span>
+            <span class="exp-location">Astana</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>$60K revenue in 2 months at 30% conversion. Reduced CPL by 44% over 8-week sprint. Restructured campaigns for 20 clients: +23% avg client revenue. Scaled pipeline to 20K followers / 14K leads / 66% conversion via Instagram + WhatsApp nurture.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2022</span>
+            <span class="exp-title"><span class="exp-company">Ernst &amp; Young</span> <span class="exp-role">· Employer Brand Intern</span></span>
+            <span class="exp-location">Astana</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>470+ qualified registrations via 22 school / 10 university partnerships. Launched Junior Ambassador Program reaching 3,000+ students.</p>
+            </div>
+          </div>
+        </div>
+        <div class="exp-entry hl-item">
+          <div class="exp-row">
+            <span class="exp-year">2021-22</span>
+            <span class="exp-title"><span class="exp-company">Alibary Agency</span> <span class="exp-role">· Growth Marketing Manager</span></span>
+            <span class="exp-location">Astana</span>
+            <span class="exp-toggle">+</span>
+          </div>
+          <div class="exp-details">
+            <div class="exp-details-inner">
+              <p>TikTok: 0 to 16K followers, 15M+ views, 1.2M engagements. Secured $65K in partnerships, 8 brand partners, +38% avg engagement lift.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">Side Projects</div>
+      <div class="projects-list highlight-list">
+        <div class="project-entry hl-item">
+          <div class="project-row">
+            <span class="project-year">2026</span>
+            <span class="project-title">Valentine's Day Campaign - <a href="https://www.whoop.com" target="_blank">WHOOP</a> (spec)</span>
+            <span class="project-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+          </div>
+          <div class="project-details">
+            <div class="project-details-inner">
+              <div class="project-media">
+                <img src="my-app/public/Whoop1.png" alt="WHOOP Valentine's Day - Add more life to your years together" loading="lazy">
+                <img src="my-app/public/Whoop2.png" alt="WHOOP Valentine's Day - One wearable built for two" loading="lazy">
+                <img src="my-app/public/Whoop3.png" alt="WHOOP Valentine's Day - Gift them more time" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-entry hl-item">
+          <div class="project-row">
+            <span class="project-year">2026</span>
+            <span class="project-title">Content Marketing - <a href="https://cluely.com" target="_blank">Cluely</a> CEO</span>
+            <span class="project-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+          </div>
+          <div class="project-details">
+            <div class="project-details-inner">
+              <div class="project-media">
+                <video src="my-app/public/0206.mp4" controls playsinline preload="metadata"></video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">Marketing Beliefs</div>
+      <div class="beliefs-list highlight-list">
+        <div class="belief-row hl-item">
+          <span class="belief-num">01</span>
+          <span class="belief-text">Optimize for profit per impression, not impressions.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">02</span>
+          <span class="belief-text">Value = (Dream Outcome x Likelihood) / (Time Delay x Effort). Every ad and landing page should move these levers.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">03</span>
+          <span class="belief-text">Volume is the variable. 100 actions a day, 100 days straight, before you call anything "not working."</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">04</span>
+          <span class="belief-text">Give away the "what," sell the "how." Free content builds trust. The transaction happens when DIY costs more than paying you.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">05</span>
+          <span class="belief-text">"Price too high" means "value too low." The answer is a better offer, not a discount.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">06</span>
+          <span class="belief-text">Four ways to get leads: warm outreach, cold outreach, content, paid ads. Master the core four.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">07</span>
+          <span class="belief-text">Advertising is inputs and outputs. For every X contacted, you get Y customers. Solve for X.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">08</span>
+          <span class="belief-text">If you can't measure it, you can't scale it. Attribution is the foundation.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">09</span>
+          <span class="belief-text">The best marketing looks like the most helpful thing the prospect has ever seen.</span>
+        </div>
+        <div class="belief-row hl-item">
+          <span class="belief-num">10</span>
+          <span class="belief-text">Make the offer so good people feel stupid saying no.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      San Francisco, CA · 2026<br>
+      Updated Mar 27, 2026
+    </footer>
+  </main>
+
+  <script>
+    function expand(entry, detailsSel, innerSel) {
+      var details = entry.querySelector(detailsSel);
+      var inner = entry.querySelector(innerSel);
+      if (!details || !inner || entry.classList.contains('active')) return;
+
+      entry.classList.add('active');
+      details.style.height = inner.offsetHeight + 'px';
+
+      function onEnd() {
+        if (entry.classList.contains('active')) details.style.height = 'auto';
+        details.removeEventListener('transitionend', onEnd);
+      }
+      details.addEventListener('transitionend', onEnd);
+    }
+
+    function collapse(entry, detailsSel) {
+      var details = entry.querySelector(detailsSel);
+      if (!details || !entry.classList.contains('active')) return;
+
+      details.style.height = details.scrollHeight + 'px';
+      details.offsetHeight;
+      details.style.height = '0';
+      entry.classList.remove('active');
+    }
+
+    var hasHover = window.matchMedia('(hover: hover)').matches;
+
+    document.querySelectorAll('.exp-entry').forEach(function(entry) {
+      if (hasHover) {
+        entry.addEventListener('mouseenter', function() {
+          expand(entry, '.exp-details', '.exp-details-inner');
+        });
+        entry.addEventListener('mouseleave', function() {
+          collapse(entry, '.exp-details');
+        });
+      } else {
+        entry.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return;
+          var wasActive = entry.classList.contains('active');
+          entry.parentElement.querySelectorAll('.active').forEach(function(el) {
+            if (el !== entry) collapse(el, '.exp-details');
+          });
+          if (wasActive) collapse(entry, '.exp-details');
+          else expand(entry, '.exp-details', '.exp-details-inner');
+        });
+      }
+    });
+
+    document.querySelectorAll('.project-entry').forEach(function(entry) {
+      entry.addEventListener('click', function(e) {
+        if (e.target.closest('a') || e.target.closest('video')) return;
+        var wasActive = entry.classList.contains('active');
+        entry.parentElement.querySelectorAll('.active').forEach(function(el) {
+          if (el !== entry) collapse(el, '.project-details');
+        });
+        if (wasActive) collapse(entry, '.project-details');
+        else expand(entry, '.project-details', '.project-details-inner');
+      });
+    });
+  </script>
+</body>
+</html>
