@@ -1,6 +1,19 @@
 .DS_Store
-node_modules/
-.next/
-my-app/node_modules/
+*.pem
+
+# Next.js
 my-app/.next/
-my-app/.git/
+my-app/out/
+my-app/build/
+my-app/node_modules/
+my-app/.pnp
+my-app/.pnp.*
+my-app/coverage/
+my-app/npm-debug.log*
+my-app/yarn-debug.log*
+my-app/yarn-error.log*
+my-app/.pnpm-debug.log*
+my-app/.env*
+my-app/.vercel
+my-app/*.tsbuildinfo
+my-app/next-env.d.ts
