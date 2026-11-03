@@ -4,7 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Azat Samatuly</title>
+  <link rel="icon" href="public/favicon.ico" type="image/png" sizes="any">
+  <link rel="apple-touch-icon" href="public/favicon.ico">
   <meta name="description" content="Performance marketer building acquisition engines. $1M/mo ad spend, 40% blended ROI, TechCrunch Battlefield 200.">
+  <meta property="og:title" content="Azat Samatuly">
+  <meta property="og:description" content="Growth Engineer in San Francisco. $1M/mo ad spend, 40% blended ROI, TechCrunch Battlefield 200.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://marketing.azat.work/">
+  <meta property="og:image" content="https://marketing.azat.work/public/og.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Azat Samatuly">
+  <meta name="twitter:description" content="Growth Engineer in San Francisco. $1M/mo ad spend, 40% blended ROI, TechCrunch Battlefield 200.">
+  <meta name="twitter:image" content="https://marketing.azat.work/public/og.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -471,7 +482,7 @@
           </div>
           <div class="exp-details">
             <div class="exp-details-inner">
-              <p>Scaling monthly ad spend to $1M across Meta &amp; Google Ads. Maintaining 40% blended ROI at $0.87 CPC. Producing 90 ad creatives/week. A/B testing hooks and formats to keep LTV above CAC by 60%</a>.</p>
+              <p>Scaling monthly ad spend to $1M across Meta &amp; Google Ads. Maintaining 40% blended ROI at $0.87 CPC. Producing 90 ad creatives/week. A/B testing hooks and formats to keep LTV above CAC by 60%.</p>
             </div>
           </div>
         </div>
@@ -677,7 +688,11 @@
       if (!details || !inner || entry.classList.contains('active')) return;
 
       entry.classList.add('active');
-      details.style.height = inner.offsetHeight + 'px';
+      details.style.height = 'auto';
+      var h = inner.scrollHeight || details.scrollHeight;
+      details.style.height = '0';
+      details.offsetHeight;
+      details.style.height = h + 'px';
 
       function onEnd() {
         if (entry.classList.contains('active')) details.style.height = 'auto';
@@ -706,17 +721,17 @@
         entry.addEventListener('mouseleave', function() {
           collapse(entry, '.exp-details');
         });
-      } else {
-        entry.addEventListener('click', function(e) {
-          if (e.target.closest('a')) return;
-          var wasActive = entry.classList.contains('active');
-          entry.parentElement.querySelectorAll('.active').forEach(function(el) {
-            if (el !== entry) collapse(el, '.exp-details');
-          });
-          if (wasActive) collapse(entry, '.exp-details');
-          else expand(entry, '.exp-details', '.exp-details-inner');
-        });
       }
+
+      entry.addEventListener('click', function(e) {
+        if (e.target.closest('a')) return;
+        var wasActive = entry.classList.contains('active');
+        entry.parentElement.querySelectorAll('.exp-entry.active').forEach(function(el) {
+          if (el !== entry) collapse(el, '.exp-details');
+        });
+        if (wasActive) collapse(entry, '.exp-details');
+        else expand(entry, '.exp-details', '.exp-details-inner');
+      });
     });
 
     document.querySelectorAll('.project-entry').forEach(function(entry) {
